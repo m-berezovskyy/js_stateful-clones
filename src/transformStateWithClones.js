@@ -14,16 +14,24 @@ function transformStateWithClones(state, actions) {
     const { type, extraData, keysToRemove } = action;
     let nextState;
 
-    if (type === 'clear') {
-      nextState = {};
-    } else if (type === 'addProperties') {
-      nextState = { ...currentState, ...extraData };
-    } else if (type === 'removeProperties') {
-      nextState = { ...currentState };
+    switch (type) {
+      case 'clear':
+        nextState = {};
+        break;
 
-      for (const key of keysToRemove) {
-        delete nextState[key];
-      }
+      case 'addProperties':
+        nextState = { ...currentState, ...extraData };
+        break;
+      case 'removeProperties':
+        nextState = { ...currentState };
+
+        for (const key of keysToRemove) {
+          delete nextState[key];
+        }
+        break;
+
+      default:
+        nextState = currentState;
     }
 
     history.push(nextState);
